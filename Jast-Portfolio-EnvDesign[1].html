@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jast — Environmental Design & Spatial Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1714;
+            --surface: #211e1a;
+            --surface-warm: #272320;
+            --surface-light: #2e2a25;
+            --border: #3a3530;
+            --border-light: #4a443e;
+            --text: #ede8e0;
+            --text-secondary: #b5ad9f;
+            --text-muted: #7d766c;
+            --cream: #f0e8d8;
+            --gold: #c9a84c;
+            --gold-dim: #8a7235;
+            --copper: #c87941;
+            --sage: #7a9a6d;
+            --slate-blue: #7889a0;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Outfit', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === SUBTLE TEXTURE === */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* === LAYOUT === */
+        .frame { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+        .frame-narrow { max-width: 800px; margin: 0 auto; padding: 0 2.5rem; }
+
+        /* === HEADER === */
+        .hero {
+            padding: 5rem 0 4rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-eyebrow {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--gold-dim);
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--cream);
+        }
+
+        .hero h1 strong {
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .hero-body {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 3rem;
+            margin-top: 2.5rem;
+            align-items: end;
+        }
+
+        .hero-desc {
+            font-family: var(--serif);
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .hero-contact {
+            text-align: right;
+            font-family: var(--sans);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 2;
+        }
+
+        .hero-contact a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .hero-contact a:hover { color: var(--gold); border-color: var(--gold); }
+
+        /* === SECTION HEADERS === */
+        .section-divider {
+            padding: 3.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .section-divider h2 {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+
+        /* === PROJECT SHOWCASE === */
+        .project {
+            padding: 4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .project-header {
+            margin-bottom: 2rem;
+        }
+
+        .project-label {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-title {
+            font-family: var(--serif);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--cream);
+        }
+
+        .project-title em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--text-secondary);
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.75rem;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            flex-wrap: wrap;
+        }
+
+        .project-meta span { display: flex; align-items: center; gap: 0.4rem; }
+        .project-meta span::before { content: '◆'; font-size: 0.4rem; color: var(--border-light); }
+
+        .project-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            line-height: 1.85;
+            margin: 1.5rem 0 2.5rem;
+        }
+
+        /* === IMAGE GRID === */
+        .gallery {
+            display: grid;
+            gap: 12px;
+        }
+
+        .gallery-2col { grid-template-columns: 1fr 1fr; }
+        .gallery-3col { grid-template-columns: 1fr 1fr 1fr; }
+        .gallery-2-1 { grid-template-columns: 2fr 1fr; }
+        .gallery-1-2 { grid-template-columns: 1fr 2fr; }
+        .gallery-hero { grid-template-columns: 1fr; }
+
+        .gallery-item {
+            position: relative;
+            background: var(--surface-warm);
+            border-radius: 6px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            border: 1px solid var(--border);
+            transition: border-color 0.3s;
+        }
+
+        .gallery-item:hover { border-color: var(--border-light); }
+
+        .gallery-item.tall { aspect-ratio: 10/14; }
+        .gallery-item.square { aspect-ratio: 1/1; }
+        .gallery-item.wide { aspect-ratio: 21/9; }
+        .gallery-item.cinematic { aspect-ratio: 2.35/1; }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img { transform: scale(1.02); }
+
+        .gallery-item .img-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2.5rem 1.25rem 1rem;
+            background: linear-gradient(transparent, rgba(20,18,15,0.92));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .img-caption { opacity: 1; }
+
+        .img-caption h4 {
+            font-family: var(--serif);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--cream);
+            margin-bottom: 0.2rem;
+        }
+
+        .img-caption p {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Placeholder for missing images */
+        .gallery-item .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, var(--surface-warm), var(--surface-light));
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .placeholder .ph-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .placeholder .ph-name {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            word-break: break-all;
+            max-width: 200px;
+        }
+
+        .placeholder .ph-note {
+            font-size: 0.72rem;
+            color: var(--border-light);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* === SKILL TAGS === */
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tag {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            padding: 0.35rem 0.85rem;
+            border-radius: 3px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            background: var(--surface);
+        }
+
+        .tag.highlight {
+            border-color: var(--gold-dim);
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.06);
+        }
+
+        /* === DESIGN PRINCIPLES === */
+        .principles {
+            padding: 4rem 0;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .principle {
+            background: var(--surface);
+            padding: 2.5rem 2rem;
+        }
+
+        .principle h3 {
+            font-family: var(--serif);
+            font-size: 1.35rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--cream);
+            margin-bottom: 0.75rem;
+        }
+
+        .principle p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* === EXPERIENCE === */
+        .exp-item {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .exp-item:last-child { border-bottom: none; }
+
+        .exp-date {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding-top: 0.3rem;
+        }
+
+        .exp-content h3 {
+            font-family: var(--serif);
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--cream);
+            margin-bottom: 0.3rem;
+        }
+
+        .exp-content .exp-org {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .exp-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* === FOOTER === */
+        .site-footer {
+            padding: 4rem 0 3rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-name {
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: var(--cream);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 2;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .footer-links a:hover { color: var(--gold); border-color: var(--gold); }
+
+        .footer-avail {
+            margin-top: 1.5rem;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* === QUOTE BLOCK === */
+        .pull-quote {
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .pull-quote blockquote {
+            font-family: var(--serif);
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .pull-quote blockquote strong {
+            font-weight: 500;
+            color: var(--cream);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .frame, .frame-narrow { padding: 0 1.5rem; }
+            .hero { padding: 3rem 0 2.5rem; }
+            .hero-body { grid-template-columns: 1fr; gap: 1.5rem; }
+            .hero-contact { text-align: left; }
+            .gallery-2col, .gallery-3col, .gallery-2-1, .gallery-1-2 { grid-template-columns: 1fr; }
+            .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+            .project { padding: 3rem 0; }
+        }
+
+        @media print {
+            body { background: white; color: #1a1a1a; }
+            body::after { display: none; }
+            :root {
+                --bg: white; --surface: #fafaf8; --surface-warm: #f5f3f0;
+                --border: #ddd; --text: #1a1a1a; --text-secondary: #555;
+                --cream: #1a1a1a; --gold: #8a6a1a;
+            }
+            .gallery-item { border-color: #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <div class="frame">
+
+        <!-- HERO -->
+        <header class="hero">
+            <div class="hero-eyebrow">Jackson "Jast" Stelter</div>
+            <h1>Environmental Design<br>& <strong>Spatial Architecture</strong></h1>
+            <div class="hero-body">
+                <p class="hero-desc">I design environments that function as experiences &mdash; spaces with circulation logic, material language, atmospheric storytelling, and structural integrity. My medium is voxel architecture; my methodology is the same one used in real-world architectural practice: research, reference, iterate, refine.</p>
+                <div class="hero-contact">
+                    <a href="mailto:jackson.stelter@gmail.com">jackson.stelter@gmail.com</a><br>
+                    (206) 305-7664<br>
+                    Seattle, Washington
+                </div>
+            </div>
+        </header>
+
+        <!-- ================================ -->
+        <!-- PROJECT 01: SMITH TOWER          -->
+        <!-- ================================ -->
+        <div class="section-divider"><h2>Portfolio</h2></div>
+
+        <div class="project">
+            <div class="project-header">
+                <div class="project-label">01 &mdash; Historical Reconstruction</div>
+                <h2 class="project-title">Smith Tower <em>&mdash; Seattle, 1914</em></h2>
+                <div class="project-meta">
+                    <span>Vintage Story</span>
+                    <span>Primary Source Research</span>
+                    <span>In Progress &mdash; Est. July 2026</span>
+                </div>
+            </div>
+            <p class="project-desc">To-scale reconstruction of Seattle's Smith Tower using original architectural blueprints obtained from the University of Washington Special Collections Library. 38-story early skyscraper at ~0.9m/block scale with micro-block voxel chiseling for ornamental detail. Material palette researched against the actual building's white glazed terra cotta, granite base, and bronze window sashes.</p>
+
+            <div class="gallery gallery-2-1">
+                <div class="gallery-item">
+                    <!-- REPLACE src with your Smith Tower progress screenshot -->
+                    <div class="placeholder">
+                        <div class="ph-icon">🏗</div>
+                        <div class="ph-name">Smith Tower — Primary Elevation</div>
+                        <div class="ph-note">Replace with build screenshot</div>
+                    </div>
+                    <div class="img-caption">
+                        <h4>Primary Elevation</h4>
+                        <p>Ground floor with historically accurate storefront rhythm, bronze lobby doors, and purple vault glass sidewalk panels</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder">
+                        <div class="ph-icon">📐</div>
+                        <div class="ph-name">Original UW Blueprints</div>
+                        <div class="ph-note">Replace with blueprint photo</div>
+                    </div>
+                    <div class="img-caption">
+                        <h4>Source Material</h4>
+                        <p>Original draft blueprints from UW Special Collections, photographed with library approval</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery gallery-3col" style="margin-top: 12px;">
+                <div class="gallery-item square">
+                    <div class="placeholder">
+                        <div class="ph-icon">🟣</div>
+                        <div class="ph-name">Purple Vault Glass Detail</div>
+                        <div class="ph-note">Replace with screenshot</div>
+                    </div>
+                    <div class="img-caption">
+                        <h4>Manganese Vault Glass</h4>
+                        <p>Century-old UV-transformed sidewalk prism panels from the Seattle Underground</p>
+                    </div>
+                </div>
+                <div class="gallery-item square">
+                    <div class="placeholder">
+                        <div class="ph-icon">🧱</div>
+                        <div class="ph-name">Material Palette Test</div>
+                        <div class="ph-note">Replace with screenshot</div>
+                    </div>
+                    <div class="img-caption">
+                        <h4>Material Study</h4>
+                        <p>Limestone, granite, wattle &amp; daub, and hardened clay for period-accurate tonal gradients</p>
+                    </div>
+                </div>
+                <div class="gallery-item square">
+                    <div class="placeholder">
+                        <div class="ph-icon">🪟</div>
+                        <div class="ph-name">Floor Plan / Footprint</div>
+                        <div class="ph-note">Replace with screenshot</div>
+                    </div>
+                    <div class="img-caption">
+                        <h4>Structural Footprint</h4>
+                        <p>Column grid from original plans mapped to block coordinates with angled corner solution</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tag-row">
+                <span class="tag highlight">Primary Source Research</span>
+                <span class="tag highlight">Historical Accuracy</span>
+                <span class="tag">Micro-Block Chiseling</span>
+                <span class="tag">Material Studies</span>
+                <span class="tag">Architectural Reconstruction</span>
+                <span class="tag">Urban Infrastructure</span>
+            </div>
+        </div>
+
+        <!-- ================================ -->
+        <!-- PROJECT 02: CHERRYVALE           -->
+        <!-- ================================ -->
+        <div class="project">
+            <div class="project-header">
+                <div class="project-label">02 &mdash; Fantasy Urban Design</div>
+                <h2 class="project-title">Cherryvale Citadel <em>&mdash; Draconic Mountain City</em></h2>
+                <div class="project-meta">
+                    <span>Minecraft</span>
+                    <span>Urban Planning + Architecture</span>
+                    <span>Completed</span>
+                </div>
+            </div>
+            <p class="project-desc">Multi-district fantasy city built into mountain terrain with integrated defensive architecture, cathedral interiors, market circulation, public gardens, and residential terracing. Every building serves a narrative function within the city's lore. The design philosophy: safety and beauty are not competing priorities.</p>
+
+            <!-- ROW 1: HERO SHOT -->
+            <div class="gallery gallery-hero">
+                <div class="gallery-item cinematic">
+                    <!-- REPLACE: Portfolio-Piece-CherryvaleCitadel1.png -->
+                    <img src="Portfolio-Piece-CherryvaleCitadel1.png" alt="Cherryvale Citadel — Great Hall interior with chandelier and vaulted arches">
+                    <div class="img-caption">
+                        <h4>Great Hall Interior</h4>
+                        <p>Vaulted nave with tiered chandelier system, layered arches, and controlled sightlines — ceremonial architecture that communicates power through spatial arrangement</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 2 -->
+            <div class="gallery gallery-2col" style="margin-top: 12px;">
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-CherryvaleCitadel2.png -->
+                    <img src="Portfolio-Piece-CherryvaleCitadel2.png" alt="Cherryvale Citadel — Market Court at night">
+                    <div class="img-caption">
+                        <h4>Market Court</h4>
+                        <p>Readable circulation, vendor bays, nighttime material contrast, and banner wayfinding</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-CherryvaleCitadel3.png -->
+                    <img src="Portfolio-Piece-CherryvaleCitadel3.png" alt="Cherryvale Citadel — Central cherry blossom park">
+                    <div class="img-caption">
+                        <h4>Central Park</h4>
+                        <p>Organic landscape integration with canopy framing and petal particle approach reveals</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 3 -->
+            <div class="gallery gallery-2col" style="margin-top: 12px;">
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-CherryTrainingGrove.png -->
+                    <img src="Portfolio-Piece-CherryTrainingGrove.png" alt="Cherry Training Grove — open-air sparring grounds">
+                    <div class="img-caption">
+                        <h4>Training Grove</h4>
+                        <p>Japanese garden philosophy: structured paths within organic landscape, martial atmosphere with natural serenity</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder">
+                        <div class="ph-icon">🏰</div>
+                        <div class="ph-name">Citadel Exterior / Fortifications</div>
+                        <div class="ph-note">Replace with exterior screenshot</div>
+                    </div>
+                    <div class="img-caption">
+                        <h4>Defensive Architecture</h4>
+                        <p>Gothic castle with proper battlements, strategic tower positioning, and multi-layer fortification</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tag-row">
+                <span class="tag highlight">Urban Planning</span>
+                <span class="tag highlight">Circulation Design</span>
+                <span class="tag">Interior Architecture</span>
+                <span class="tag">Environmental Storytelling</span>
+                <span class="tag">Landscape Integration</span>
+                <span class="tag">Defensive Architecture</span>
+            </div>
+        </div>
+
+        <!-- ================================ -->
+        <!-- PROJECT 03: GRAVEL SHORE + BOOKSTORE -->
+        <!-- ================================ -->
+        <div class="project">
+            <div class="project-header">
+                <div class="project-label">03 &mdash; Vernacular Architecture &amp; Atmosphere</div>
+                <h2 class="project-title">Gravel Shore &amp; Main Street <em>&mdash; Lighting Studies</em></h2>
+                <div class="project-meta">
+                    <span>Minecraft + Vintage Story</span>
+                    <span>Atmosphere + Material Language</span>
+                    <span>Completed</span>
+                </div>
+            </div>
+            <p class="project-desc">Individual buildings designed with attention to vernacular architectural language, material honesty, and atmospheric transformation across lighting conditions. These pieces demonstrate that the same structure communicates completely different emotional experiences depending on environmental context &mdash; the same principle real architects design for.</p>
+
+            <div class="gallery gallery-2col">
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-GravelShoreTavern1.png -->
+                    <img src="Portfolio-Piece-GravelShoreTavern1.png" alt="Gravel Shore Tavern at golden sunset">
+                    <div class="img-caption">
+                        <h4>Gravel Shore Tavern &mdash; Golden Hour</h4>
+                        <p>Waterfront composition with warm emissive lighting, dock integration, and silhouette balance</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-GravelShoreTavern2.png -->
+                    <img src="Portfolio-Piece-GravelShoreTavern2.png" alt="Gravel Shore Tavern under northern lights">
+                    <div class="img-caption">
+                        <h4>Gravel Shore Tavern &mdash; Polar Night</h4>
+                        <p>Same structure, aurora ambience study &mdash; emissive-to-environment contrast shifts the entire emotional read</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery gallery-2-1" style="margin-top: 12px;">
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-MainStreetBookstore.png -->
+                    <img src="Portfolio-Piece-MainStreetBookstore.png" alt="Main Street Bookstore — period commercial architecture">
+                    <div class="img-caption">
+                        <h4>Main Street Bookstore</h4>
+                        <p>1920s-era commercial vernacular with weathered brick variation, period-correct window proportions, and art deco entrance detailing</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-ChiselingWork1.png -->
+                    <img src="Portfolio-Piece-ChiselingWork1.png" alt="Chiseled interior kit — archway, desk, lamp">
+                    <div class="img-caption">
+                        <h4>Chisel Detail Kit</h4>
+                        <p>1/16th-block-scale furniture: brick arch, desk with drawers, banker&rsquo;s lamp. Micro-detail set dressing.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tag-row">
+                <span class="tag highlight">Lighting Design</span>
+                <span class="tag highlight">Material Language</span>
+                <span class="tag">Atmospheric Storytelling</span>
+                <span class="tag">Period Architecture</span>
+                <span class="tag">Micro-Detail Chiseling</span>
+                <span class="tag">Furniture Design</span>
+            </div>
+        </div>
+
+        <!-- ================================ -->
+        <!-- PROJECT 04: TROLLEY              -->
+        <!-- ================================ -->
+        <div class="project">
+            <div class="project-header">
+                <div class="project-label">04 &mdash; Infrastructure &amp; Transit Design</div>
+                <h2 class="project-title">Vintage Trolley System <em>&mdash; Urban Transit</em></h2>
+                <div class="project-meta">
+                    <span>Vintage Story</span>
+                    <span>Vehicle + Infrastructure Design</span>
+                    <span>Completed</span>
+                </div>
+            </div>
+            <p class="project-desc">Period-accurate streetcar with functional rail infrastructure, overhead catenary power lines, and correct rail gauge. Designed as a working urban transit element &mdash; not a decorative prop. The underframe detail (bogies, step plates, trim) demonstrates that believable transport design requires the parts you don't normally see.</p>
+
+            <div class="gallery gallery-2col">
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-Trolley1.png -->
+                    <img src="Portfolio-Piece-Trolley1.png" alt="Vintage trolley — full car and catenary system">
+                    <div class="img-caption">
+                        <h4>Full Car &amp; Catenary</h4>
+                        <p>Vehicle scale, rail gauge, overhead power infrastructure &mdash; hallmark of functional urban systems thinking</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <!-- REPLACE: Portfolio-Piece-Trolley2.png -->
+                    <img src="Portfolio-Piece-Trolley2.png" alt="Vintage trolley — undercarriage and truck detail">
+                    <div class="img-caption">
+                        <h4>Underframe Detail</h4>
+                        <p>Bogies, step plates, and trim discipline for believable transport. The parts you don't see make the parts you do believable.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tag-row">
+                <span class="tag highlight">Infrastructure Design</span>
+                <span class="tag">Vehicle Design</span>
+                <span class="tag">Urban Transit Systems</span>
+                <span class="tag">Period Accuracy</span>
+                <span class="tag">Detail Discipline</span>
+            </div>
+        </div>
+
+        <!-- ================================ -->
+        <!-- DESIGN PRINCIPLES                -->
+        <!-- ================================ -->
+        <div class="section-divider"><h2>Design Philosophy</h2></div>
+
+        <div class="principles">
+            <div class="principles-grid">
+                <div class="principle">
+                    <h3>Spaces, not structures</h3>
+                    <p>A building is a container for experience. I design the journey through a space &mdash; sightlines, reveals, circulation, compression and release &mdash; not just the walls that define it. The path matters as much as the destination.</p>
+                </div>
+                <div class="principle">
+                    <h3>Materials have meaning</h3>
+                    <p>Every surface communicates. Heavy stone at a base says permanence. Warm wood in an interior says refuge. I research real-world material language and translate it faithfully, even when the medium is blocks.</p>
+                </div>
+                <div class="principle">
+                    <h3>Reference-driven process</h3>
+                    <p>I pull original blueprints from university archives. I study period-correct window proportions. I research streetcar rail gauges. The work looks right because it <em>is</em> right &mdash; accuracy is the foundation that intuition builds on.</p>
+                </div>
+                <div class="principle">
+                    <h3>Scale is a design tool</h3>
+                    <p>I work at every scale simultaneously &mdash; from city-level urban planning down to 1/16th-block chiseled furniture. The macro and micro must agree. A citadel that looks grand from a distance but empty up close has failed.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================ -->
+        <!-- ADDITIONAL EXPERIENCE            -->
+        <!-- ================================ -->
+        <div class="section-divider"><h2>Additional Work</h2></div>
+
+        <div style="padding: 2rem 0 4rem;">
+            <div class="exp-item">
+                <div class="exp-date">2024 &mdash; Present</div>
+                <div class="exp-content">
+                    <h3>Cerulean Peak</h3>
+                    <div class="exp-org">Medieval Life Simulation &mdash; In Development</div>
+                    <p>Game prototype featuring environmental design, settlement progression, and resource-driven spatial expansion. Environments evolve as the player builds, requiring every structure to function within both early-game scarcity and late-game abundance.</p>
+                </div>
+            </div>
+            <div class="exp-item">
+                <div class="exp-date">2024</div>
+                <div class="exp-content">
+                    <h3>Gamedev.js Jam &mdash; Top 100</h3>
+                    <div class="exp-org">Solo Developer &mdash; 620 Submissions</div>
+                    <p>Complete short-form game built under intense time pressure as a solo developer. Rapid prototyping, UX design, and visual polish under deadline constraints.</p>
+                </div>
+            </div>
+            <div class="exp-item">
+                <div class="exp-date">2025</div>
+                <div class="exp-content">
+                    <h3>Cyberpunk 2077 Character Mod</h3>
+                    <div class="exp-org">Custom 3D Character Pipeline</div>
+                    <p>Rigged a custom anthro character model into REDengine4 over two weeks, manually refitting all clothing items for a complete 40-hour playthrough. Demonstrated full character pipeline understanding: modeling, rigging, material assignment, and engine integration.</p>
+                </div>
+            </div>
+            <div class="exp-item">
+                <div class="exp-date">2020 &mdash; Present</div>
+                <div class="exp-content">
+                    <h3>Castle Vonidar Universe</h3>
+                    <div class="exp-org">Speculative Fiction &mdash; 50+ Documents</div>
+                    <p>Hard sci-fi universe with architectural implications: station design, planetary settlement infrastructure, military spatial logistics. The worldbuilding informs and is informed by spatial design thinking.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================ -->
+        <!-- TOOLS                            -->
+        <!-- ================================ -->
+        <div class="section-divider"><h2>Tools &amp; Capabilities</h2></div>
+
+        <div style="padding: 2rem 0 3rem;">
+            <div class="tag-row" style="justify-content: center; gap: 0.6rem;">
+                <span class="tag">Minecraft Creative</span>
+                <span class="tag">Vintage Story</span>
+                <span class="tag">Blender</span>
+                <span class="tag">Chisel & Bits / Micro-Blocks</span>
+                <span class="tag">Shader Configuration</span>
+                <span class="tag">REDengine4</span>
+                <span class="tag">3D Rigging & Materials</span>
+                <span class="tag">Architectural Research</span>
+                <span class="tag">Primary Source Analysis</span>
+                <span class="tag">Period Reference Work</span>
+                <span class="tag">Urban Planning</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">HTML/CSS</span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <div class="footer-name">Jackson &ldquo;Jast&rdquo; Stelter</div>
+            <div class="footer-links">
+                <a href="mailto:jackson.stelter@gmail.com">jackson.stelter@gmail.com</a> &middot; (206) 305-7664 &middot; Seattle, WA
+            </div>
+            <div class="footer-avail">
+                Available for: Level Design &middot; Environment Art &middot; Worldbuilding &middot; Architectural Visualization &middot; Freelance
+            </div>
+        </footer>
+
+    </div>
+</body>
+</html>
