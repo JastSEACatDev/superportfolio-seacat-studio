@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jast — Multidisciplinary Technologist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1115;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-dim: #8b949e;
+            --accent: #58a6ff; 
+            --accent-dim: rgba(88, 166, 255, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
+
+        /* HEADER */
+        .hub-header { text-align: center; margin-bottom: 5rem; }
+        .hub-id { font-family: 'JetBrains Mono', monospace; color: var(--accent); letter-spacing: 0.1em; font-size: 0.9rem; margin-bottom: 1rem; }
+        .hub-title { font-size: 3rem; font-weight: 600; letter-spacing: -0.02em; color: #fff; margin-bottom: 1rem; }
+        .hub-bio { max-width: 600px; margin: 0 auto; color: var(--text-dim); font-size: 1.1rem; }
+
+        /* GRID */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 6rem;
+        }
+
+        .portal-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .portal-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+        .portal-card h2 { font-size: 1.4rem; margin-bottom: 0.5rem; color: #fff; }
+        .portal-card p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .portal-link { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--accent); display: flex; align-items: center; gap: 0.5rem; }
+        .portal-link::after { content: '→'; }
+
+        /* RESUME SECTION */
+        .resume-section { 
+            background: #fff; 
+            color: #1a1a1a; 
+            padding: 4rem; 
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .resume-header { border-bottom: 2px solid #1a1a1a; padding-bottom: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end; }
+        .r-name { font-size: 2.2rem; font-weight: 700; line-height: 1; }
+        .r-contact { text-align: right; font-size: 0.9rem; line-height: 1.4; }
+        .r-title { font-family: 'JetBrains Mono', monospace; color: #444; font-size: 0.9rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .r-grid { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .r-label { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: #555; padding-top: 0.2rem; }
+        
+        .r-item { margin-bottom: 1.5rem; }
+        .r-role-row { display: flex; justify-content: space-between; margin-bottom: 0.3rem; }
+        .r-role { font-weight: 700; font-size: 1.05rem; }
+        .r-date { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #666; }
+        .r-org { font-style: italic; color: #444; margin-bottom: 0.5rem; display: block; }
+        .r-desc { font-size: 0.95rem; color: #333; line-height: 1.5; }
+        .r-desc li { margin-bottom: 0.3rem; margin-left: 1.2rem; }
+
+        .r-skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .r-skill-tag { background: #f0f0f0; padding: 0.2rem 0.6rem; border-radius: 3px; font-size: 0.85rem; display: inline-block; margin: 0 0.3rem 0.3rem 0; }
+
+        .download-btn {
+            display: block;
+            width: fit-content;
+            margin: 3rem auto 0;
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: #0f1115;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        @media (max-width: 768px) {
+            .resume-section { padding: 2rem; }
+            .resume-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .r-contact { text-align: left; }
+            .r-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+            .r-label { margin-bottom: 0.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.2rem; }
+        }
+
+        @media print {
+            body { background: white; }
+            .hub-header, .portal-grid, .download-btn { display: none; }
+            .container { padding: 0; max-width: 100%; }
+            .resume-section { box-shadow: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- HUB HEADER -->
+    <header class="hub-header">
+        <div class="hub-id">JACKSON STELTER</div>
+        <h1 class="hub-title">Systems & Narrative Architect</h1>
+        <p class="hub-bio">Specialist in complex system modeling, technical documentation, and environmental design. I turn abstract mechanics into functional, lived-in worlds.</p>
+    </header>
+
+    <!-- PORTALS -->
+    <div class="portal-grid">
+        <a href="Jast-Portfolio-EnvDesign[1].html" class="portal-card">
+            <div>
+                <h2>Environmental Design</h2>
+                <p>Voxel architecture, historical reconstruction, and level design. Featuring the 1:1 Smith Tower project.</p>
+            </div>
+            <div class="portal-link">View Portfolio</div>
+        </a>
+        <a href="Jast-Portfolio-GameDesign[1].html" class="portal-card">
+            <div>
+                <h2>Game Systems</h2>
+                <p>Mechanics design, balancing, and economy simulation. Featuring the MCRP 2.5 Engine.</p>
+            </div>
+            <div class="portal-link">View Portfolio</div>
+        </a>
+        <a href="Jast-Portfolio-TechDoc[1].html" class="portal-card">
+            <div>
+                <h2>Technical Documentation</h2>
+                <p>Knowledge architecture and systems manuals. Featuring the DPN Economic Model.</p>
+            </div>
+            <div class="portal-link">View Portfolio</div>
+        </a>
+        <a href="Jast-Portfolio-Narrative[1].html" class="portal-card">
+            <div>
+                <h2>Narrative Design</h2>
+                <p>Worldbuilding bibles and interactive fiction. Featuring the Castle Vonidar universe.</p>
+            </div>
+            <div class="portal-link">View Portfolio</div>
+        </a>
+    </div>
+
+    <!-- RESUME SECTION -->
+    <div class="resume-section" id="resume">
+        <header class="resume-header">
+            <div>
+                <div class="r-name">Jackson "Jast" Stelter</div>
+                <div class="r-title">Systems Designer & Technical Writer</div>
+            </div>
+            <div class="r-contact">
+                (206) 305-7664<br>
+                jackson.stelter@gmail.com<br>
+                Seattle, WA
+            </div>
+        </header>
+
+        <div class="r-grid">
+            <div class="r-label">Profile</div>
+            <div class="r-desc">
+                Multidisciplinary designer with 8+ years of experience in systems architecture, technical documentation, and project management. Expert in translating complex data into user-facing mechanics and navigable environments. Proven ability to ship projects under constraints (Top 100 Game Jam) and maintain long-term living systems (3-year active campaign management).
+            </div>
+        </div>
+
+        <div class="r-grid">
+            <div class="r-label">Project Experience</div>
+            <div>
+                <div class="r-item">
+                    <div class="r-role-row">
+                        <span class="r-role">Lead Systems Designer</span>
+                        <span class="r-date">2017 – Present</span>
+                    </div>
+                    <span class="r-org">MCRP (Minecraft Colonies Roleplay Project)</span>
+                    <ul class="r-desc">
+                        <li>Architected a complete TTRPG system engine (v2.5) merging D&D mechanics with colony simulation logic.</li>
+                        <li>Designed a balanced 12-node economic model handling supply chains for 14+ subsystems.</li>
+                        <li>Authored 100+ pages of technical documentation, rulesets, and new player onboarding guides.</li>
+                        <li>Managed a 3-year active campaign, resolving user disputes and iterating mechanics based on live playtest data.</li>
+                    </ul>
+                </div>
+                <div class="r-item">
+                    <div class="r-role-row">
+                        <span class="r-role">Technical Environmental Artist</span>
+                        <span class="r-date">2024 – Present</span>
+                    </div>
+                    <span class="r-org">Smith Tower Historical Reconstruction</span>
+                    <ul class="r-desc">
+                        <li>Conducting primary source research at UW Special Collections to translate 1914 blueprints into 3D voxel environments.</li>
+                        <li>Calculated scale conversions (1:16 ratio) to ensure structural accuracy of the 38-story tower.</li>
+                        <li>Replicated historical material properties (manganese glass aging) using restricted texture palettes.</li>
+                    </ul>
+                </div>
+                <div class="r-item">
+                    <div class="r-role-row">
+                        <span class="r-role">Solo Developer</span>
+                        <span class="r-date">2024</span>
+                    </div>
+                    <span class="r-org">Gamedev.js Jam</span>
+                    <ul class="r-desc">
+                        <li>Shipped a complete playable title within strict jam time constraints.</li>
+                        <li>Handled all aspects of production: code (JS/Python), art, UX, and QA.</li>
+                        <li>Achieved Top 100 placement out of 620 international submissions.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="r-grid">
+            <div class="r-label">Work History</div>
+            <div>
+                <div class="r-item">
+                    <div class="r-role-row">
+                        <span class="r-role">Acquisitions & Logistics Coordinator (Vol.)</span>
+                        <span class="r-date">2022 – 2023</span>
+                    </div>
+                    <span class="r-org">Food Bank at St. Mary's</span>
+                    <ul class="r-desc">
+                        <li>Managed resource allocation for 100+ daily clients in a high-scarcity environment.</li>
+                        <li>Optimized intake workflows to maintain throughput during technical system outages.</li>
+                        <li>Coordinated physical logistics for city-wide product acquisition and distribution.</li>
+                    </ul>
+                </div>
+                <div class="r-item">
+                    <div class="r-role-row">
+                        <span class="r-role">Inventory & Fulfillment Associate</span>
+                        <span class="r-date">2021 – 2022</span>
+                    </div>
+                    <span class="r-org">Card Kingdom / Mox Boarding House</span>
+                    <ul class="r-desc">
+                        <li>Managed high-volume inventory tracking across complex digital database systems.</li>
+                        <li>Maintained high-accuracy order fulfillment rates in a fast-paced logistics environment.</li>
+                        <li>Rapidly adapted to new inventory management software, training into the role with minimal supervision.</li>
+                        <li>Generated digitization reports to reconcile physical stock with database records.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="r-grid">
+            <div class="r-label">Technical Skills</div>
+            <div class="r-skills-grid">
+                <div>
+                    <strong>Software & Tools</strong><br>
+                    <span class="r-skill-tag">VS Code</span>
+                    <span class="r-skill-tag">GitHub</span>
+                    <span class="r-skill-tag">Vintage Story</span>
+                    <span class="r-skill-tag">Blender</span>
+                    <span class="r-skill-tag">JSON/YAML</span>
+                    <span class="r-skill-tag">Markdown</span>
+                    <span class="r-skill-tag">Jira/Linear</span>
+                </div>
+                <div>
+                    <strong>Core Competencies</strong><br>
+                    <span class="r-skill-tag">Systems Design</span>
+                    <span class="r-skill-tag">Technical Writing</span>
+                    <span class="r-skill-tag">Process Optimization</span>
+                    <span class="r-skill-tag">Historical Research</span>
+                    <span class="r-skill-tag">Logistics Planning</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="javascript:window.print()" class="download-btn">Download Resume as PDF</a>
+
+</div>
+
+</body>
+</html>
